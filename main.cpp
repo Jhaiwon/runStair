@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <chrono>
 using namespace std;
 
 class Player
@@ -9,35 +10,38 @@ class Player
 
 public:
     int run();
-    int moveLeft();
-    int moveRight();
+    void moveLeft();
+    void moveRight();
 };
 
 int Player::run()
-{
-    if (keyboard_ = 'a')
+{ 
+        cin>>keyboard_;
+        if (keyboard_ =='a'||keyboard_=='A')
     {
         system("cls");
         moveLeft();
     }
-    else if (keyboard_ = 'd')
+    else if (keyboard_ =='d'||keyboard_=='D')
     {
+
         system("cls");
         moveRight();
     }
     return 0;
+    
 }
 
-int Player::moveLeft()
+void Player::moveLeft()
 {
-    cout<<"왼쪽입니다."<<endl;
-    return 0;
+    cout << "왼쪽입니다." << endl;
+    run();
 }
 
-int Player::moveRight()
+void Player::moveRight()
 {
-    cout<<"오른쪽입니다."<<endl;
-    return 0;
+    cout << "오른쪽입니다." << endl;
+    run();
 }
 
 int main()
