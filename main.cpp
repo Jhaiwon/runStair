@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <chrono>
 #include <termio.h>
+#include <random>
 using namespace std;
 
 class Player
@@ -10,7 +11,7 @@ class Player
     int upstair = 0;
     char keyboard_;
     int controller;
-    int print =0;
+    int print = 0;
 
 public:
     int run();
@@ -49,10 +50,10 @@ int Player::run()
         system("cls");
         moveRight();
     }
-    if (keyboard_ != controller)
+    /*if (keyboard_ != controller)
     {
         gameover();
-    }
+    }*/
 
     return 0;
 }
@@ -60,27 +61,32 @@ int Player::run()
 void Player::moveLeft()
 {
     cout << "왼쪽입니다." << endl;
+    level++;
     run();
 }
 
 void Player::moveRight()
 {
     cout << "오른쪽입니다." << endl;
+    level++;
     run();
 }
 
 void Player::gameover()
 {
-    if(print==0){
-    cout << "게임오버! 당신은 " << level << "에 죽었습니다." << endl;
-    cout << "게임플레이 시간 :" << "초" << endl;
-         print++;
+    if (print == 0)
+    {
+        cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+        cout << "게임플레이 시간 :"<<level<< "초" << endl;
+        print++;
     }
     exit;
 }
 
 bool Player::command()
 {
+    controller = 0;
+
     return false;
 }
 
