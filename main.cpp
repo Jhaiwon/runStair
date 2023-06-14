@@ -12,13 +12,14 @@ class Player
     char keyboard_;
     int controller;
     int print = 0;
+    int randomChar;
 
 public:
     int run();
     void moveLeft();
     void moveRight();
     void gameover();
-    bool command();
+    char command();
 };
 
 int getch(void)
@@ -38,6 +39,7 @@ int getch(void)
 
 int Player::run()
 {
+    command();
     keyboard_ = getch();
     if (keyboard_ == 'a' || keyboard_ == 'A')
     {
@@ -77,17 +79,41 @@ void Player::gameover()
     if (print == 0)
     {
         cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-        cout << "게임플레이 시간 :"<<level<< "초" << endl;
+        cout << "게임플레이 시간 :" << level << "초" << endl;
         print++;
     }
     exit;
 }
 
-bool Player::command()
-{
-    controller = 0;
+char Player::command(){
+    char LEFT='A';
+    char RIGHT='D';
+    char left='a';
+    char right='d';
 
-    return false;
+    randomChar = rand() % 4;
+    switch (randomChar)
+    {
+    case 0:
+        return LEFT;
+        break;
+    case 1:
+        return RIGHT;
+        break;
+    case 2:
+        return left;
+        break;
+    case 3:
+        return right;
+        break;
+    default:
+        gameover();
+        break;
+    }
+       
+       cout << randomChar<<endl;
+
+    return 0;
 }
 
 int main()
