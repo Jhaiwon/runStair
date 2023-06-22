@@ -3,6 +3,7 @@
 #include <chrono>
 #include <termio.h>
 #include <random>
+#include "Dance.h"
 using namespace std;
 
 int ConCase = 0;
@@ -104,7 +105,7 @@ void Player:: gameover()
     {
         cout << endl;
         cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-        cout << "게임플레이 시간 :" << level << "초" << endl;
+        //cout << "게임플레이 시간 :" << level << "초" << endl;
         print++;
     }
     exit;
