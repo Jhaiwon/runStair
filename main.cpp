@@ -25,6 +25,8 @@ public:
     void gameover();
     int screenCommand();
 };
+
+//키보드 버퍼를 받는 함수
 int getch(void)
 {
     int ch;
@@ -39,6 +41,7 @@ int getch(void)
     tcsetattr(0, TCSAFLUSH, &save);
     return ch;
 }
+
 int Player::run()
 {
     int KeyCase = 0;
