@@ -5,8 +5,12 @@
 #include <random>
 using namespace std;
 
+int ConCase = 0;
+int Match = 0;
+
 class Player
-{
+{public:
+
     int level = 0;
     int upstair = 0;
     char keyboard_;
@@ -19,9 +23,8 @@ public:
     void moveLeft();
     void moveRight();
     void gameover();
-    char command();
+    int screenCommand();
 };
-
 int getch(void)
 {
     int ch;
@@ -36,26 +39,44 @@ int getch(void)
     tcsetattr(0, TCSAFLUSH, &save);
     return ch;
 }
-
 int Player::run()
 {
-    command();
+    int KeyCase = 0;
+    screenCommand();
     keyboard_ = getch();
+
+    //오른쪽 왼쪽 값을 KeyCase에 반환
     if (keyboard_ == 'a' || keyboard_ == 'A')
     {
-        system("cls");
-        moveLeft();
+        KeyCase = 5;
     }
     else if (keyboard_ == 'd' || keyboard_ == 'D')
     {
-
-        system("cls");
-        moveRight();
+        KeyCase = 6;
     }
-    /*if (keyboard_ != controller)
+
+
+    //키보드 버퍼와 랜덤 값의 비교
+    if ((KeyCase == 5 && Match == 7)|| (KeyCase == 6 && Match == 8))
+    {
+        if (KeyCase==5)
+        {
+            system("clear");
+            moveLeft();
+
+        }
+        if (KeyCase == 6)
+        {
+            system("clear");
+            moveRight();
+        }
+        
+    }
+    else if((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8))
     {
         gameover();
-    }*/
+    }
+    
 
     return 0;
 }
@@ -74,10 +95,11 @@ void Player::moveRight()
     run();
 }
 
-void Player::gameover()
+void Player:: gameover()
 {
     if (print == 0)
     {
+        cout << endl;
         cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
         cout << "게임플레이 시간 :" << level << "초" << endl;
         print++;
@@ -85,34 +107,55 @@ void Player::gameover()
     exit;
 }
 
-char Player::command(){
-    char LEFT='A';
-    char RIGHT='D';
-    char left='a';
-    char right='d';
-
+char command(char LEFT,char RIGHT, char left, char right) {
+    
+    char 
     randomChar = rand() % 4;
     switch (randomChar)
     {
     case 0:
+        ConCase = 1;//A
         return LEFT;
         break;
     case 1:
+        ConCase = 2;//D
         return RIGHT;
         break;
     case 2:
+        ConCase = 3;//a
         return left;
         break;
     case 3:
+        ConCase = 4;//d
         return right;
         break;
     default:
-        gameover();
         break;
     }
-       
-       cout << randomChar<<endl;
 
+    return ConCase;
+}
+int Player:: screenCommand() {
+    srand(time(0));
+
+    char LEFT = 'A';
+    char RIGHT = 'D';
+    char left = 'a';
+    char right = 'd';
+
+    char random = command(LEFT, RIGHT, left, right);
+
+    if (ConCase==1||ConCase==3)
+    {
+        cout << "←" << endl;//A 혹은 a일 경우 왼쪽 화살표 출력
+        Match = 7;
+
+    }
+    else if (ConCase==2||ConCase==4)
+    {
+        cout << "→" << endl;//d 혹은 D일경우 오른쪽 화살표 출력
+        Match = 8;
+    }
     return 0;
 }
 
