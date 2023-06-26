@@ -3,6 +3,7 @@
 #include <chrono>
 #include <termio.h>
 #include <random>
+#include <ctime>
 #include "Dance.h"
 using namespace std;
 
