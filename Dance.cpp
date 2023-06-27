@@ -1,10 +1,10 @@
 #include "Dance.h"
 
-void leftDance()
+void leftDanceDraw()
 {
-
+    std::cout<<std::endl;
 }
 
-void rightDance()
+void rightDanceDraw()
 {
 }

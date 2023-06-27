@@ -10,7 +10,6 @@ using namespace std;
 
 int ConCase = 0;
 int Match = 0;
-bool buttonPress = false;
 
 class Player
 {
@@ -27,6 +26,8 @@ public:
     void moveLeft();
     void moveRight();
     int screenCommand();
+    void decreaseTime();
+    void timeOver();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -48,6 +49,7 @@ int getch(void)
 int Player::run()
 {
     int KeyCase = 0;
+    decreaseTime();
     screenCommand();
     keyboard_ = getch();
 
@@ -75,7 +77,8 @@ int Player::run()
             moveRight();
         }
     }
-    else if ((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8))
+
+    else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
     {
         if (checkPoint == false)
         {
@@ -156,6 +159,24 @@ int Player::screenCommand()
     }
     return 0;
 }
+
+void Player::timeOver()
+{
+    thread tm(&Player::decreaseTime,this);
+    tm.detach();
+}
+
+void Player::decreaseTime()
+{
+    int Timer=5;
+    bool buttonPressed = false;
+
+    auto startTm=chrono::steady_clock::now();
+    auto endTm=startTm+chrono::seconds(Timer);
+
+
+}
+
 
 int main()
 {

@@ -2,9 +2,10 @@
 #define DANCE
 
 #include <iostream>
+#include <stdio.h>
 
 
-void leftDance();
-void rightDance();
+void leftDanceDraw();
+void rightDanceDraw();
 
 #endif
