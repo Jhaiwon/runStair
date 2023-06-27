@@ -3,32 +3,33 @@
 #include <chrono>
 #include <termio.h>
 #include <random>
-#include <ctime>
+#include <thread>
 #include "Dance.h"
+
 using namespace std;
 
 int ConCase = 0;
 int Match = 0;
+bool buttonPress = false;
 
 class Player
-{public:
-
+{
+public:
     int level = 0;
     int upstair = 0;
     char keyboard_;
     int controller;
-    int print = 0;
+    bool checkPoint = false;
     int randomChar;
 
 public:
     int run();
     void moveLeft();
     void moveRight();
-    void gameover();
     int screenCommand();
 };
 
-//키보드 버퍼를 받는 함수
+// 키보드 버퍼를 받는 함수
 int getch(void)
 {
     int ch;
@@ -50,7 +51,7 @@ int Player::run()
     screenCommand();
     keyboard_ = getch();
 
-    //오른쪽 왼쪽 값을 KeyCase에 반환
+    // 오른쪽 왼쪽 값을 KeyCase에 반환
     if (keyboard_ == 'a' || keyboard_ == 'A')
     {
         KeyCase = 5;
@@ -60,28 +61,31 @@ int Player::run()
         KeyCase = 6;
     }
 
-
-    //키보드 버퍼와 랜덤 값의 비교
-    if ((KeyCase == 5 && Match == 7)|| (KeyCase == 6 && Match == 8))
+    // 키보드 버퍼와 랜덤 값의 비교
+    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
     {
-        if (KeyCase==5)
+        if (KeyCase == 5)
         {
             system("clear");
             moveLeft();
-
         }
         if (KeyCase == 6)
         {
             system("clear");
             moveRight();
         }
-        
     }
-    else if((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8))
+    else if ((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8))
     {
-        gameover();
+        if (checkPoint == false)
+        {
+            cout << endl;
+            cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+            // cout << "게임플레이 시간 :" << time << "초" << endl;
+            checkPoint = true;
+        }
+        exit;
     }
-    
 
     return 0;
 }
@@ -100,38 +104,27 @@ void Player::moveRight()
     run();
 }
 
-void Player:: gameover()
+char command(char LEFT, char RIGHT, char left, char right)
 {
-    if (print == 0)
-    {
-        cout << endl;
-        cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-        //cout << "게임플레이 시간 :" << level << "초" << endl;
-        print++;
-    }
-    exit;
-}
 
-char command(char LEFT,char RIGHT, char left, char right) {
-    
-    char 
-    randomChar = rand() % 4;
+    char
+        randomChar = rand() % 4;
     switch (randomChar)
     {
     case 0:
-        ConCase = 1;//A
+        ConCase = 1; // A
         return LEFT;
         break;
     case 1:
-        ConCase = 2;//D
+        ConCase = 2; // D
         return RIGHT;
         break;
     case 2:
-        ConCase = 3;//a
+        ConCase = 3; // a
         return left;
         break;
     case 3:
-        ConCase = 4;//d
+        ConCase = 4; // d
         return right;
         break;
     default:
@@ -140,7 +133,8 @@ char command(char LEFT,char RIGHT, char left, char right) {
 
     return ConCase;
 }
-int Player:: screenCommand() {
+int Player::screenCommand()
+{
     srand(time(0));
 
     char LEFT = 'A';
@@ -150,15 +144,14 @@ int Player:: screenCommand() {
 
     char random = command(LEFT, RIGHT, left, right);
 
-    if (ConCase==1||ConCase==3)
+    if (ConCase == 1 || ConCase == 3)
     {
-        cout << "←" << endl;//A 혹은 a일 경우 왼쪽 화살표 출력
+        cout << "←" << endl; // A 혹은 a일 경우 왼쪽 화살표 출력
         Match = 7;
-
     }
-    else if (ConCase==2||ConCase==4)
+    else if (ConCase == 2 || ConCase == 4)
     {
-        cout << "→" << endl;//d 혹은 D일경우 오른쪽 화살표 출력
+        cout << "→" << endl; // d 혹은 D일경우 오른쪽 화살표 출력
         Match = 8;
     }
     return 0;
