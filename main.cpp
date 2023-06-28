@@ -10,6 +10,8 @@ using namespace std;
 
 int ConCase = 0;
 int Match = 0;
+int KeyCase = 0;
+bool buttonPressed = false;
 
 class Player
 {
@@ -27,7 +29,7 @@ public:
     void moveRight();
     int screenCommand();
     void decreaseTime();
-    void timeOver();
+    // void timeOver();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -48,10 +50,10 @@ int getch(void)
 
 int Player::run()
 {
-    int KeyCase = 0;
-    decreaseTime();
     screenCommand();
     keyboard_ = getch();
+
+    decreaseTime();
 
     // 오른쪽 왼쪽 값을 KeyCase에 반환
     if (keyboard_ == 'a' || keyboard_ == 'A')
@@ -95,6 +97,7 @@ int Player::run()
 
 void Player::moveLeft()
 {
+    // leftDanceDraw();
     cout << "왼쪽입니다." << endl;
     level++;
     run();
@@ -102,6 +105,7 @@ void Player::moveLeft()
 
 void Player::moveRight()
 {
+    // rightDanceDraw();
     cout << "오른쪽입니다." << endl;
     level++;
     run();
@@ -110,8 +114,7 @@ void Player::moveRight()
 char command(char LEFT, char RIGHT, char left, char right)
 {
 
-    char
-        randomChar = rand() % 4;
+    char randomChar = rand() % 4;
     switch (randomChar)
     {
     case 0:
@@ -160,23 +163,21 @@ int Player::screenCommand()
     return 0;
 }
 
-void Player::timeOver()
+/*void Player::timeOver()
 {
     thread tm(&Player::decreaseTime,this);
     tm.detach();
-}
+}*/
 
 void Player::decreaseTime()
 {
-    int Timer=5;
-    bool buttonPressed = false;
+    int Timer = 5;
 
-    auto startTm=chrono::steady_clock::now();
-    auto endTm=startTm+chrono::seconds(Timer);
+    time_t startTm = time(nullptr);
+    time_t endTm = startTm + Timer;
 
-
+   
 }
-
 
 int main()
 {
