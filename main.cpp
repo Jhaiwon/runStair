@@ -29,9 +29,8 @@ public:
     void moveLeft();
     void moveRight();
     int screenCommand();
-    void decreaseTime();
-    void getchCommand();
     void gameover();
+    void timeover();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -52,51 +51,82 @@ int getch(void)
 
 int Player::run()
 {
-    decreaseTime();
+    const int waitingTime = 3;
+    screenCommand();
 
-    // 키보드 버퍼와 랜덤 값의 비교
-    /* if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
-     {
-         if (KeyCase == 5)
-         {
-             system("clear");
-             moveLeft();
-         }
-         if (KeyCase == 6)
-         {
-             system("clear");
-             moveRight();
-         }
-     }
+    chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+    keyboard_ = getch();
+    chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
 
-     else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
-     {
-         if (checkPoint == false)
-         {
-             cout << endl;
-             cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-             // cout << "게임플레이 시간 :" << time << "초" << endl;
-             checkPoint = true;
-         }
-     }
- */
-    return 0;
-}
+    std::chrono::duration<double> elapsedSeconds = endTime - startTime;
+    double elapsed_time = elapsedSeconds.count();
 
-void Player::gameover()
-{
-    if (checkPoint == false)
+    if (elapsed_time < waitingTime)
+    {
+        switch (keyboard_)
+        {
+        case 'a':
+            KeyCase = 5;
+            break;
+
+        case 'A':
+            KeyCase = 5;
+            break;
+
+        case 'd':
+
+            KeyCase = 6;
+            break;
+        case 'D':
+            KeyCase = 6;
+            break;
+        }
+
+        if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+        {
+            if (KeyCase == 5)
+            {
+                system("clear");
+                // leftDanceDraw();
+                moveLeft();
+            }
+            if (KeyCase == 6)
+            {
+                system("clear");
+                // rightDanceDraw();
+                moveRight();
+            }
+        }
+        else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
+        {
+
+            if (checkPoint == false)
+            {
+                cout << endl;
+                cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+                // cout << "게임플레이 시간 :" << time << "초" << endl;
+                checkPoint = true;
+                exit;
+            }
+        }
+    }
+    else
+    {
+        if (checkPoint == false)
     {
         cout << endl;
-        cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+        cout << "타임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
         // cout << "게임플레이 시간 :" << time << "초" << endl;
         checkPoint = true;
     }
+    }
+
+    return 0;
 }
+
 
 void Player::moveLeft()
 {
-    // leftDanceDraw();
     cout << "왼쪽입니다." << endl;
     level++;
     run();
