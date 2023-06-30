@@ -4,6 +4,7 @@
 #include <termio.h>
 #include <random>
 #include <thread>
+#include <ctime>
 #include "Dance.h"
 
 using namespace std;
@@ -29,7 +30,8 @@ public:
     void moveRight();
     int screenCommand();
     void decreaseTime();
-    // void timeOver();
+    void getchCommand();
+    void gameover();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -50,49 +52,46 @@ int getch(void)
 
 int Player::run()
 {
-    screenCommand();
-    keyboard_ = getch();
-
     decreaseTime();
 
-    // 오른쪽 왼쪽 값을 KeyCase에 반환
-    if (keyboard_ == 'a' || keyboard_ == 'A')
-    {
-        KeyCase = 5;
-    }
-    else if (keyboard_ == 'd' || keyboard_ == 'D')
-    {
-        KeyCase = 6;
-    }
-
     // 키보드 버퍼와 랜덤 값의 비교
-    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
-    {
-        if (KeyCase == 5)
-        {
-            system("clear");
-            moveLeft();
-        }
-        if (KeyCase == 6)
-        {
-            system("clear");
-            moveRight();
-        }
-    }
+    /* if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+     {
+         if (KeyCase == 5)
+         {
+             system("clear");
+             moveLeft();
+         }
+         if (KeyCase == 6)
+         {
+             system("clear");
+             moveRight();
+         }
+     }
 
-    else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
-    {
-        if (checkPoint == false)
-        {
-            cout << endl;
-            cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-            // cout << "게임플레이 시간 :" << time << "초" << endl;
-            checkPoint = true;
-        }
-        exit;
-    }
-
+     else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
+     {
+         if (checkPoint == false)
+         {
+             cout << endl;
+             cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+             // cout << "게임플레이 시간 :" << time << "초" << endl;
+             checkPoint = true;
+         }
+     }
+ */
     return 0;
+}
+
+void Player::gameover()
+{
+    if (checkPoint == false)
+    {
+        cout << endl;
+        cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+        // cout << "게임플레이 시간 :" << time << "초" << endl;
+        checkPoint = true;
+    }
 }
 
 void Player::moveLeft()
@@ -163,24 +162,10 @@ int Player::screenCommand()
     return 0;
 }
 
-/*void Player::timeOver()
-{
-    thread tm(&Player::decreaseTime,this);
-    tm.detach();
-}*/
-
-void Player::decreaseTime()
-{
-    int Timer = 5;
-
-    time_t startTm = time(nullptr);
-    time_t endTm = startTm + Timer;
-
-   
-}
-
 int main()
 {
+
     Player Pl;
+
     Pl.run();
 }
