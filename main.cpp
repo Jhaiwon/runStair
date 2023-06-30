@@ -77,6 +77,7 @@ int Player::run()
 
             KeyCase = 6;
             break;
+        
         case 'D':
             KeyCase = 6;
             break;
