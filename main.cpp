@@ -3,7 +3,7 @@
 #include <chrono>
 #include <termio.h>
 #include <random>
-#include <thread>
+#include <unistd.h>
 #include <ctime>
 #include "Dance.h"
 
@@ -13,6 +13,7 @@ int ConCase = 0;
 int Match = 0;
 int KeyCase = 0;
 bool buttonPressed = false;
+bool gameplay = true;
 
 class Player
 {
@@ -25,12 +26,12 @@ public:
     int randomChar;
 
 public:
+    int gamestart();
+    void howToPlay();
     int run();
     void moveLeft();
     void moveRight();
     int screenCommand();
-    void gameover();
-    void timeover();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -47,6 +48,39 @@ int getch(void)
     ch = getchar();
     tcsetattr(0, TCSAFLUSH, &save);
     return ch;
+}
+
+int Player::gamestart()
+{
+    char selectKey;
+
+    cout << "" << endl;   // 제목
+    cout << "1-" << endl; // 게임시작
+    cout << "2-" << endl; // 게임설명
+    cout << "3-" << endl; // 게임종료
+
+    cin >> selectKey;
+
+    if (selectKey == '1')
+    {
+        run();
+    }
+
+    if (selectKey == '2')
+    {
+        howToPlay();
+    }
+
+    if (selectKey == '3')
+    {
+        exit;
+    }
+
+    return 0;
+}
+
+void Player::howToPlay()
+{
 }
 
 int Player::run()
@@ -77,7 +111,7 @@ int Player::run()
 
             KeyCase = 6;
             break;
-        
+
         case 'D':
             KeyCase = 6;
             break;
@@ -114,17 +148,16 @@ int Player::run()
     else
     {
         if (checkPoint == false)
-    {
-        cout << endl;
-        cout << "타임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-        // cout << "게임플레이 시간 :" << time << "초" << endl;
-        checkPoint = true;
-    }
+        {
+            cout << endl;
+            cout << "타임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
+            // cout << "게임플레이 시간 :" << time << "초" << endl;
+            checkPoint = true;
+        }
     }
 
     return 0;
 }
-
 
 void Player::moveLeft()
 {
@@ -197,6 +230,5 @@ int main()
 {
 
     Player Pl;
-
-    Pl.run();
+    Pl.gamestart();
 }
