@@ -9,11 +9,11 @@
 
 using namespace std;
 
-int ConCase = 0;
+int selectCase = 0;
 int Match = 0;
 int KeyCase = 0;
 bool buttonPressed = false;
-bool gameplay = true;
+bool gameplay=true; 
 
 class Player
 {
@@ -22,7 +22,6 @@ public:
     int upstair = 0;
     char keyboard_;
     int controller;
-    bool checkPoint = false;
     int randomChar;
 
 public:
@@ -32,6 +31,7 @@ public:
     void moveLeft();
     void moveRight();
     int screenCommand();
+    void gameover();
 };
 
 // 키보드 버퍼를 받는 함수
@@ -54,15 +54,17 @@ int Player::gamestart()
 {
     char selectKey;
 
-    cout << "" << endl;   // 제목
-    cout << "1-" << endl; // 게임시작
-    cout << "2-" << endl; // 게임설명
-    cout << "3-" << endl; // 게임종료
+    cout << "무한 화살표" << endl;   // 제목
+    cout <<endl;
+    cout << "1-게임시작" << endl; // 게임시작
+    cout << "2-게임설명" << endl; // 게임설명
+    cout << "3-게임종료" << endl; // 게임종료
 
-    cin >> selectKey;
+    selectKey = getch();
 
     if (selectKey == '1')
     {
+        system("clear");
         run();
     }
 
@@ -73,6 +75,8 @@ int Player::gamestart()
 
     if (selectKey == '3')
     {
+        system("clear");
+        cout<<"게임을 종료합니다."<<endl;
         exit;
     }
 
@@ -85,7 +89,9 @@ void Player::howToPlay()
 
 int Player::run()
 {
-    const int waitingTime = 3;
+    bool Input = false;
+    
+    const double waitingTime = 1.2;
     screenCommand();
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
@@ -116,48 +122,46 @@ int Player::run()
             KeyCase = 6;
             break;
         }
-
-        if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
-        {
-            if (KeyCase == 5)
-            {
-                system("clear");
-                // leftDanceDraw();
-                moveLeft();
-            }
-            if (KeyCase == 6)
-            {
-                system("clear");
-                // rightDanceDraw();
-                moveRight();
-            }
-        }
-        else if (((KeyCase != 5 && Match == 7) || (KeyCase != 6 && Match == 8)))
-        {
-
-            if (checkPoint == false)
-            {
-                cout << endl;
-                cout << "게임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-                // cout << "게임플레이 시간 :" << time << "초" << endl;
-                checkPoint = true;
-                exit;
-            }
-        }
     }
     else
     {
-        if (checkPoint == false)
+        Input=false;
+       gameover();
+    }
+
+    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+    {
+        Input = true;
+    }
+    else Input=false,gameover();
+
+    while (Input == true)
+    {
+        if (KeyCase == 5)
         {
-            cout << endl;
-            cout << "타임오버! 당신은 " << level << "계단에서 죽었습니다." << endl;
-            // cout << "게임플레이 시간 :" << time << "초" << endl;
-            checkPoint = true;
+            system("clear");
+            // leftDanceDraw();
+            moveLeft();
         }
+        if (KeyCase == 6)
+        {
+            system("clear");
+            // rightDanceDraw();
+            moveRight();
+        }
+        break;
+    }
+   
+
+    if (Input == false)
+    {
+        gameplay=false;
+        gameover();
     }
 
     return 0;
 }
+
 
 void Player::moveLeft()
 {
@@ -181,26 +185,26 @@ char command(char LEFT, char RIGHT, char left, char right)
     switch (randomChar)
     {
     case 0:
-        ConCase = 1; // A
+        selectCase = 1; // A
         return LEFT;
         break;
     case 1:
-        ConCase = 2; // D
+        selectCase = 2; // D
         return RIGHT;
         break;
     case 2:
-        ConCase = 3; // a
+        selectCase = 3; // a
         return left;
         break;
     case 3:
-        ConCase = 4; // d
+        selectCase = 4; // d
         return right;
         break;
     default:
         break;
     }
 
-    return ConCase;
+    return selectCase;
 }
 int Player::screenCommand()
 {
@@ -213,17 +217,28 @@ int Player::screenCommand()
 
     char random = command(LEFT, RIGHT, left, right);
 
-    if (ConCase == 1 || ConCase == 3)
+    if (selectCase == 1 || selectCase == 3)
     {
         cout << "←" << endl; // A 혹은 a일 경우 왼쪽 화살표 출력
         Match = 7;
     }
-    else if (ConCase == 2 || ConCase == 4)
+    else if (selectCase == 2 || selectCase == 4)
     {
         cout << "→" << endl; // d 혹은 D일경우 오른쪽 화살표 출력
         Match = 8;
     }
     return 0;
+}
+
+void Player::gameover()
+{
+    if(gameplay==false)
+    {
+        cout<<endl;
+        cout<<"gameover~ "<<level<<"에서 죽었습니다."<<endl;
+        gameplay=true;
+    }
+
 }
 
 int main()
