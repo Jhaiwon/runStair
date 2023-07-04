@@ -13,7 +13,7 @@ int selectCase = 0;
 int Match = 0;
 int KeyCase = 0;
 bool buttonPressed = false;
-bool gameplay=true; 
+bool gameplay = true;
 
 class Player
 {
@@ -27,7 +27,7 @@ public:
 public:
     int gamestart();
     void howToPlay();
-    int run();
+    int gamescreen();
     void moveLeft();
     void moveRight();
     int screenCommand();
@@ -50,12 +50,12 @@ int getch(void)
     return ch;
 }
 
-int Player::gamestart()
+int Player::gamescreen()
 {
     char selectKey;
 
-    cout << "무한 화살표" << endl;   // 제목
-    cout <<endl;
+    cout << "무한 화살표" << endl; // 제목
+    cout << endl;
     cout << "1-게임시작" << endl; // 게임시작
     cout << "2-게임설명" << endl; // 게임설명
     cout << "3-게임종료" << endl; // 게임종료
@@ -65,7 +65,7 @@ int Player::gamestart()
     if (selectKey == '1')
     {
         system("clear");
-        run();
+        gamestart();
     }
 
     if (selectKey == '2')
@@ -76,8 +76,7 @@ int Player::gamestart()
     if (selectKey == '3')
     {
         system("clear");
-        cout<<"게임을 종료합니다."<<endl;
-        exit;
+        cout << "게임을 종료합니다." << endl;
     }
 
     return 0;
@@ -85,12 +84,26 @@ int Player::gamestart()
 
 void Player::howToPlay()
 {
+    system("clear");
+    cout << "게임설명 이러쿵저러쿵" << endl;
+    cout << "이전 버튼 -b";
+    int back;
+    back = getch();
+
+    if (back == 'b')
+    {
+        system("clear");
+        gamescreen();
+    }
+    else
+        // cout << "다시 입력해주세요"<<endl;
+    howToPlay();
 }
 
-int Player::run()
+int Player::gamestart()
 {
     bool Input = false;
-    
+
     const double waitingTime = 1.2;
     screenCommand();
 
@@ -125,15 +138,16 @@ int Player::run()
     }
     else
     {
-        Input=false;
-       gameover();
+        Input = false;
+        gameover();
     }
 
     if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
     {
         Input = true;
     }
-    else Input=false,gameover();
+    else
+        Input = false, gameover();
 
     while (Input == true)
     {
@@ -151,23 +165,21 @@ int Player::run()
         }
         break;
     }
-   
 
     if (Input == false)
     {
-        gameplay=false;
+        gameplay = false;
         gameover();
     }
 
     return 0;
 }
 
-
 void Player::moveLeft()
 {
     cout << "왼쪽입니다." << endl;
     level++;
-    run();
+    gamestart();
 }
 
 void Player::moveRight()
@@ -175,7 +187,7 @@ void Player::moveRight()
     // rightDanceDraw();
     cout << "오른쪽입니다." << endl;
     level++;
-    run();
+    gamestart();
 }
 
 char command(char LEFT, char RIGHT, char left, char right)
@@ -232,18 +244,17 @@ int Player::screenCommand()
 
 void Player::gameover()
 {
-    if(gameplay==false)
+    if (gameplay == false)
     {
-        cout<<endl;
-        cout<<"gameover~ "<<level<<"에서 죽었습니다."<<endl;
-        gameplay=true;
+        cout << endl;
+        cout << "gameover~ " << level << "차례에서 죽었습니다." << endl;
+        gameplay = true;
     }
-
 }
 
 int main()
 {
 
     Player Pl;
-    Pl.gamestart();
+    Pl.gamescreen();
 }
