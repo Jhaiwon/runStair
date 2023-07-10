@@ -84,20 +84,28 @@ int Player::gamescreen()
 
 void Player::howToPlay()
 {
+    bool collectKey = false;
     system("clear");
     cout << "게임설명 이러쿵저러쿵" << endl;
     cout << "이전 버튼 -b";
     int back;
     back = getch();
 
+    while (back != 'b')
+    {
+        if (collectKey == false)
+        {
+            cout << endl;
+            cout << "올바른 키가 아닙니다. 다시 입력해주세요." << endl;
+            collectKey = true;
+        }
+        back = getch();
+    }
     if (back == 'b')
     {
         system("clear");
         gamescreen();
     }
-    else
-        // cout << "다시 입력해주세요"<<endl;
-    howToPlay();
 }
 
 int Player::gamestart()
@@ -107,14 +115,14 @@ int Player::gamestart()
     const double waitingTime = 1.2;
     screenCommand();
 
-    chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+   // chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
     keyboard_ = getch();
-    chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
+    //chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
 
-    std::chrono::duration<double> elapsedSeconds = endTime - startTime;
-    double elapsed_time = elapsedSeconds.count();
+    //std::chrono::duration<double> elapsedSeconds = endTime - startTime;
+    //double elapsed_time = elapsedSeconds.count();
 
-    if (elapsed_time < waitingTime)
+    if (Input==true)
     {
         switch (keyboard_)
         {
