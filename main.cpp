@@ -22,7 +22,7 @@ public:
     int level = 0;
     int upstair = 0;
     char keyboard_;
-    int controller;
+    int controller = 0;
     int randomChar;
 
 public:
@@ -68,6 +68,7 @@ int Player::gamescreen()
     {
         system("clear");
         gamestart();
+        return 0;
     }
 
     if (selectKey == '2')
@@ -80,7 +81,6 @@ int Player::gamescreen()
         system("clear");
         cout << "게임을 종료합니다." << endl;
     }
-
     return 0;
 }
 
@@ -112,9 +112,10 @@ void Player::howToPlay()
 
 int Player::gamestart()
 {
-    Input = false;
-    screenCommand();
     startTime = chrono::steady_clock::now();
+
+    screenCommand();
+    Input = false;
     keyboard_ = getch();
 
     if (Input == true)
@@ -138,19 +139,19 @@ int Player::gamestart()
             KeyCase = 6;
             break;
         }
+
+        if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+        {
+            Input = true;
+        }
+        else
+            Input = false, gameover();
     }
     else
     {
         Input = false;
         gameover();
     }
-
-    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
-    {
-        Input = true;
-    }
-    else
-        Input = false, gameover();
 
     while (Input == true)
     {
@@ -160,14 +161,16 @@ int Player::gamestart()
 
             // leftDanceDraw();
             moveLeft();
+            break;
         }
         if (KeyCase == 6)
         {
             system("clear");
             // rightDanceDraw();
             moveRight();
+            break;
         }
-        break;
+        
     }
 
     /*if (Input == false)
@@ -197,7 +200,7 @@ void Player::moveRight()
 char command(char LEFT, char RIGHT, char left, char right)
 {
 
-    char randomChar = rand() % 4;
+    unsigned char randomChar = rand() % 4;
     switch (randomChar)
     {
     case 0:
