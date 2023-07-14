@@ -144,41 +144,39 @@ int Player::gamestart()
         Input = false;
         gameover();
     }
-    if (upstair == 0)
+
+    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
     {
-        if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+        Input = true;
+    }
+    else
+        Input = false, gameover();
+
+    while (Input == true)
+    {
+        if (KeyCase == 5)
         {
-            Input = true;
+            system("clear");
+
+            // leftDanceDraw();
+            moveLeft();
         }
-        else
-            Input = false, gameover();
-
-        while (Input == true)
+        if (KeyCase == 6)
         {
-            if (KeyCase == 5)
-            {
-                system("clear");
-
-                // leftDanceDraw();
-                moveLeft();
-            }
-            if (KeyCase == 6)
-            {
-                system("clear");
-                // rightDanceDraw();
-                moveRight();
-            }
-            break;
+            system("clear");
+            // rightDanceDraw();
+            moveRight();
         }
+        break;
+    }
 
-        /*if (Input == false)
-        {
-           gameplay = false;
-            gameover();
-        }*/}
+    /*if (Input == false)
+    {
+       gameplay = false;
+        gameover();
+    }*/
 
-        return 0;
-    
+    return 0;
 }
 
 void Player::moveLeft()
