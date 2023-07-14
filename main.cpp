@@ -5,7 +5,6 @@
 #include <random>
 #include <unistd.h>
 #include <ctime>
-#include "Dance.h"
 
 using namespace std;
 
@@ -14,6 +13,8 @@ int Match = 0;
 int KeyCase = 0;
 bool buttonPressed = false;
 bool gameplay = true;
+chrono::steady_clock::time_point startTime;
+bool Input = false;
 
 class Player
 {
@@ -47,6 +48,7 @@ int getch(void)
     tcsetattr(0, TCSAFLUSH, &buf);
     ch = getchar();
     tcsetattr(0, TCSAFLUSH, &save);
+    Input = true;
     return ch;
 }
 
@@ -110,19 +112,12 @@ void Player::howToPlay()
 
 int Player::gamestart()
 {
-    bool Input = false;
-
-    const double waitingTime = 1.2;
+    Input = false;
     screenCommand();
-
-   // chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+    startTime = chrono::steady_clock::now();
     keyboard_ = getch();
-    //chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
 
-    //std::chrono::duration<double> elapsedSeconds = endTime - startTime;
-    //double elapsed_time = elapsedSeconds.count();
-
-    if (Input==true)
+    if (Input == true)
     {
         switch (keyboard_)
         {
@@ -149,38 +144,41 @@ int Player::gamestart()
         Input = false;
         gameover();
     }
-
-    if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
+    if (upstair == 0)
     {
-        Input = true;
-    }
-    else
-        Input = false, gameover();
-
-    while (Input == true)
-    {
-        if (KeyCase == 5)
+        if ((KeyCase == 5 && Match == 7) || (KeyCase == 6 && Match == 8))
         {
-            system("clear");
-            // leftDanceDraw();
-            moveLeft();
+            Input = true;
         }
-        if (KeyCase == 6)
+        else
+            Input = false, gameover();
+
+        while (Input == true)
         {
-            system("clear");
-            // rightDanceDraw();
-            moveRight();
+            if (KeyCase == 5)
+            {
+                system("clear");
+
+                // leftDanceDraw();
+                moveLeft();
+            }
+            if (KeyCase == 6)
+            {
+                system("clear");
+                // rightDanceDraw();
+                moveRight();
+            }
+            break;
         }
-        break;
-    }
 
-    if (Input == false)
-    {
-        gameplay = false;
-        gameover();
-    }
+        /*if (Input == false)
+        {
+           gameplay = false;
+            gameover();
+        }*/}
 
-    return 0;
+        return 0;
+    
 }
 
 void Player::moveLeft()
@@ -252,11 +250,16 @@ int Player::screenCommand()
 
 void Player::gameover()
 {
-    if (gameplay == false)
+    if (upstair == 0)
     {
+        chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsedSeconds = endTime - startTime;
+        double elapsed_time = elapsedSeconds.count();
+
         cout << endl;
         cout << "gameover~ " << level << "차례에서 죽었습니다." << endl;
-        gameplay = true;
+        cout << "게임 플레이 시간: " << elapsed_time << endl;
+        upstair = 1;
     }
 }
 
