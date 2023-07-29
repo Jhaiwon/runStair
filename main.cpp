@@ -1,10 +1,8 @@
 #include <iostream>
-#include <stdio.h>
-#include <chrono>
 #include <termio.h>
 #include <random>
-#include <unistd.h>
 #include <ctime>
+#include <thread>
 
 using namespace std;
 
@@ -13,7 +11,8 @@ int Match = 0;
 int KeyCase = 0;
 bool buttonPressed = false;
 bool gameplay = true;
-chrono::steady_clock::time_point startTime;
+time_t start, finish;
+double duration;
 bool Input = false;
 
 class Player
@@ -34,6 +33,7 @@ public:
     int screenCommand();
     void gameover();
 };
+void 
 
 // 키보드 버퍼를 받는 함수
 int getch(void)
@@ -88,8 +88,9 @@ void Player::howToPlay()
 {
     bool collectKey = false;
     system("clear");
-    cout << "게임설명 이러쿵저러쿵" << endl;
-    cout << "이전 버튼 -b";
+    cout << "게임설명" << endl;
+    cout << "시간내로 많은 계단을 올라가면 승리!\n계단 방향과 다른 쪽으로 입력시 게임 오버됩니다." << '\n';
+    cout << "\n이전 버튼 -b";
     int back;
     back = getch();
 
@@ -112,7 +113,7 @@ void Player::howToPlay()
 
 int Player::gamestart()
 {
-    startTime = chrono::steady_clock::now();
+    start = time(NULL);
 
     screenCommand();
     Input = false;
@@ -159,40 +160,34 @@ int Player::gamestart()
         {
             system("clear");
 
-            // leftDanceDraw();
             moveLeft();
             break;
         }
         if (KeyCase == 6)
         {
             system("clear");
-            // rightDanceDraw();
             moveRight();
             break;
         }
-        
     }
-
-    /*if (Input == false)
-    {
-       gameplay = false;
-        gameover();
-    }*/
 
     return 0;
 }
 
 void Player::moveLeft()
 {
-    cout << "왼쪽입니다." << endl;
+    cout << " ㅇ /" << endl;
+    cout << "/|" << endl;
+    cout << "ㅅ" << endl;
     level++;
     gamestart();
 }
 
 void Player::moveRight()
 {
-    // rightDanceDraw();
-    cout << "오른쪽입니다." << endl;
+    cout << "\\ㅇ" << endl;
+    cout << " |\\" << endl;
+    cout << "ㅅ" << endl;
     level++;
     gamestart();
 }
@@ -253,13 +248,13 @@ void Player::gameover()
 {
     if (upstair == 0)
     {
-        chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
-        std::chrono::duration<double> elapsedSeconds = endTime - startTime;
-        double elapsed_time = elapsedSeconds.count();
+        
+      finish=time(NULL);
+       duration=(double)(finish-start);
 
         cout << endl;
         cout << "gameover~ " << level << "차례에서 죽었습니다." << endl;
-        cout << "게임 플레이 시간: " << elapsed_time << endl;
+        cout << "게임 플레이 시간: " << duration <<"초"<< endl;
         upstair = 1;
     }
 }
